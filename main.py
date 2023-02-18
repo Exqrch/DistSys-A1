@@ -107,7 +107,7 @@ def execution(roles, order):
     logger.debug(f"number of running processes: {len(list_nodes)}")
 
     logger.info("Running city...")
-    # reload_logging_config_node(f"city.txt")
+    reload_logging_config_node(f"city.txt")
     number_general = roles.count(False)
     logger.debug(f"number_general: {number_general}")
     return city.main(starting_port+4, number_general)

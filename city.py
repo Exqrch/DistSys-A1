@@ -20,31 +20,34 @@ class City:
         orders = []
         for i in range(self.number_general):
             msg, _ = self.node_socket.listen()
-            sender, order = int(msg.split(';')[0]), int(msg.split(';')[1])
+            msg = msg.split('~')
+            sender, order = msg[0], int(msg[1].split('=')[-1])
+
             orders.append(order)
 
             if order:
                 order = "ATTACK"
             else:
                 order = "RETREAT from"
-            if sender == 0:
-                logging.info(f"supreme_general {order} us!")
-            else:
-                logging.info(f"general_{sender} {order} us!")
+            logging.info(f"{sender} {order} us!")
 
         logging.info(f"Concluding what happen...")
         if len(orders) < 2:
             logging.info(f"GENERAL CONSENSUS: ERROR_LESS_THAN_TWO_GENERALS")
+            logging.shutdown()
             return "ERROR_LESS_THAN_TWO_GENERALS"
         else:
             if sum(orders) == 3:
                 logging.info(f"GENERAL CONSENSUS: ATTACK")
+                logging.shutdown()
                 return "ATTACK"
             elif sum(orders) == 2 or sum(orders) == 1:
                 logging.info(f"GENERAL CONSENSUS: FAILED")
+                logging.shutdown()
                 return "FAILED"
             else:
                 logging.info(f"GENERAL CONSENSUS: RETREAT")
+                logging.shutdown()
                 return "RETREAT"
 
 
